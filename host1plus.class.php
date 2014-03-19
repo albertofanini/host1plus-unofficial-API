@@ -30,6 +30,7 @@ class Host1Plus {
 		$url = 'https://manage.host1plus.com/dologin.php';
 		$fields = array('token' => $token,'username' => $username,'password' => $password);
 		
+		$fields_string = "";
 		foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
 		rtrim($fields_string, '&');
 		
@@ -64,19 +65,19 @@ class Host1Plus {
 	
 	function start ($vpsid) {
 		if ($this->status($vpsid) == "stopped")
-			return $this->send_request($vpsid, "start");
+			return ($this->send_request($vpsid, "start") == "success" ? true : false);
 		else return false;
 	}
 
 	function stop ($vpsid) {
 		if ($this->status($vpsid) == "running")
-			return $this->send_request($vpsid, "stop");
+			return ($this->send_request($vpsid, "stop") == "success" ? true : false);
 		else return false;
 	}
 	
 	function reboot ($vpsid) {
 		if ($this->status($vpsid) == "running")
-			return $this->send_request($vpsid, "reboot");
+			return ($this->send_request($vpsid, "reboot") == "success" ? true : false);
 		else return false;
 	}
 	
@@ -101,10 +102,10 @@ $password = "mypassword";
 $ovzp_ctid = "####"; // get this number on your client area
 
 $h1p = new Host1Plus($username, $password); // login to your client area on Host1Plus
-echo $h1p->status($ovzp_ctid); // get vps status
-echo $h1p->stop($ovzp_ctid); // shut down your vps
-echo $h1p->start($ovzp_ctid); // start your vps
-echo $h1p->reboot($ovzp_ctid); // restart your vps
+$h1p->status($ovzp_ctid); // get vps status
+$h1p->stop($ovzp_ctid); // shut down your vps
+$h1p->start($ovzp_ctid); // start your vps
+$h1p->reboot($ovzp_ctid); // restart your vps
 
 $h1p->logout(); // recommended action
 
