@@ -63,7 +63,9 @@ class Host1Plus {
 	}
 	
 	function start ($vpsid) {
-		return $this->send_request($vpsid, "start");
+		if ($this->status($vpsid) == "stopped")
+			return $this->send_request($vpsid, "start");
+		else return false;
 	}
 
 	function stop ($vpsid) {
